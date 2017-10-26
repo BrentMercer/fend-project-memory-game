@@ -1,7 +1,6 @@
-/*
- * Create a list that holds all of your cards
- */
 
+// Contains all cards
+var newDeck = ["diamond", "diamond", "anchor", "anchor", "paper plane", "paper plane", "bolt", "bolt", "cube", "cube", "leaf", "leaf", "bicycle", "bicycle", "bomb", "bomb"];
 
 /*
  * Display the cards on the page
@@ -9,6 +8,7 @@
  *   - loop through each card and create its HTML
  *   - add each card's HTML to the page
  */
+
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
@@ -21,11 +21,22 @@ function shuffle(array) {
         array[currentIndex] = array[randomIndex];
         array[randomIndex] = temporaryValue;
     }
-
     return array;
 }
 
+function createDeck(array) {
+	for (let i = 0; i < newDeck.length; i++) {
+		$( '.deck' ).append( '<li class="card">' + newDeck[i] + ' </li> ');
+	}
+	return array;
+}
 
+
+// New game operations
+const playGame = function() {
+	shuffle(newDeck);
+	createDeck(newDeck);
+}
 /*
  * set up the event listener for a card. If a card is clicked:
  *  - display the card's symbol (put this functionality in another function that you call from this one)
@@ -36,3 +47,46 @@ function shuffle(array) {
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
+
+
+
+// Add clicked card to pair checker
+let cardsInPlay = [];
+
+// Toggle 'show' class on card click, add to pair-checker
+function openedCards() {
+	const opener = this;
+	$(opener).addClass('show');
+	cardsInPlay.push(opener); // ### This line is no good. Needs to push one class per 'show' match.
+	console.log(cardsInPlay);
+}
+
+// Run function that adds up to 2 cards to check against each other
+function checkCards() {
+	const checker = this;
+	if (cardsInPlay.length === 2) {
+		if (cardsInPlay[0] === cardsInPlay[1]) {
+			$('show').addClass('match').removeClass('show');
+		}
+		cardsInPlay = [];
+	}
+}
+
+
+
+
+
+// Initiate new game on page load
+playGame();
+
+// Listen for player to click on card and run functions
+$( '.card' ).click(function() {
+	openedCards();
+	checkCards();
+});
+
+
+
+
+
+
