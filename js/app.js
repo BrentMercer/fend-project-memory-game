@@ -3,6 +3,7 @@
 let newDeck = ["diamond", "diamond", "anchor", "anchor", "paper plane", "paper plane", "bolt", "bolt", "cube", "cube", "leaf", "leaf", "bicycle", "bicycle", "bomb", "bomb"];
 let counter = 0;
 let cardsInPlay = [];
+let timer = 0;
 
 
 
@@ -92,6 +93,19 @@ function allMatch() {
 
 
 
+// TIMER
+
+// Display time
+$('.time').text(timer);
+
+// Start timer
+setInterval(function(){
+	timer++;
+	}, 1000);
+}
+
+
+
 // NEW GAME
 
 // New game operations
@@ -115,6 +129,7 @@ $( '.card' ).click(function() {
 	checkMatch();
 	addCount();
 	allMatch();
+	startTime();
 	// openCards(this);
 });
 
