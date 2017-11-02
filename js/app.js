@@ -1,14 +1,12 @@
 
 // Contains all cards
-var newDeck = ["diamond", "diamond", "anchor", "anchor", "paper plane", "paper plane", "bolt", "bolt", "cube", "cube", "leaf", "leaf", "bicycle", "bicycle", "bomb", "bomb"];
+let newDeck = ["diamond", "diamond", "anchor", "anchor", "paper plane", "paper plane", "bolt", "bolt", "cube", "cube", "leaf", "leaf", "bicycle", "bicycle", "bomb", "bomb"];
+let counter = 0;
+let cardsInPlay = [];
 
-/*
- * Display the cards on the page
- *   - shuffle the list of cards using the provided "shuffle" method below
- *   - loop through each card and create its HTML
- *   - add each card's HTML to the page
- */
 
+
+// BUILD DECK
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
@@ -24,69 +22,103 @@ function shuffle(array) {
     return array;
 }
 
+// Create new gameboard
 function createDeck(array) {
 	for (let i = 0; i < newDeck.length; i++) {
-		$( '.deck' ).append( '<li class="card">' + newDeck[i] + ' </li> ');
+		$( '.deck' ).append( '<li class="card"><i class="fa fa-' + String(newDeck[i].replace(/ /g,"-")) + '"></i>' + newDeck[i] + '</li>');
 	}
 	return array;
 }
 
 
-// New game operations
-const playGame = function() {
-	shuffle(newDeck);
-	createDeck(newDeck);
-}
-/*
- * set up the event listener for a card. If a card is clicked:
- *  - display the card's symbol (put this functionality in another function that you call from this one)
- *  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
- *  - if the list already has another card, check to see if the two cards match
- *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
- *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
- *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
- *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
- */
 
 
+// GUESS COUNTER
 
-// Add clicked card to pair checker
-let cardsInPlay = [];
+// Set counter to 0 on page load
+$( '.moves' ).text(0);
 
-// Toggle 'show' class on card click, add to pair-checker
-function openedCards() {
-	const opener = this;
-	$(opener).addClass('show');
-	cardsInPlay.push(opener); // ### This line is no good. Needs to push one class per 'show' match.
-	console.log(cardsInPlay);
-}
-
-// Run function that adds up to 2 cards to check against each other
-function checkCards() {
-	const checker = this;
-	if (cardsInPlay.length === 2) {
-		if (cardsInPlay[0] === cardsInPlay[1]) {
-			$('show').addClass('match').removeClass('show');
-		}
-		cardsInPlay = [];
+// Add +1 for every click and display on page
+function addCount() {
+	counter++;
+	$( '.moves' ).text(counter);
+	if (counter === 28 || counter === 36 || counter === 44 ) {
+		$( '.stars li:last-child' ).remove();
 	}
 }
 
 
 
+// MATCH CHECKERS
+
+// Adds clicked element to list to check for matches
+function addToList(clickedElement) {
+	cardsInPlay.push(clickedElement);
+	$( clickedElement ).addClass( 'open show' );
+}
+
+//  Check if list items match
+function checkMatch() {
+	if (cardsInPlay.length === 2) {
+		if (cardsInPlay[0].innerText === cardsInPlay[1].innerText) {
+			yesMatch();
+		} else {
+			noMatch();
+		}
+		cardsInPlay = [];
+	}
+}
+
+// If match, add match class and remove open and show classes
+function yesMatch() {
+	$( '.show' ).addClass( 'match' ).removeClass( 'open show' );
+}
+
+// If no match, remove open and show classes after short delay
+function noMatch() {
+	setTimeout(function(){
+		$( '.show' ).removeClass( 'open show' ); }, 200);
+}
+
+// Check to see if all matches have been found. If so, display win alert.
+function allMatch() {
+	let matches = $( 'li.match' ).length;
+	let stars = $( '.stars li' ).length;
+	console.log(matches);
+	if (newDeck.length === matches) {
+		alert("You win!" + "\nTotal guesses: " + counter + "\nStar ranking: " + stars );
+	}
+}
 
 
-// Initiate new game on page load
-playGame();
+
+// NEW GAME
+
+// New game operations
+const newGame = function() {
+	shuffle(newDeck);
+	createDeck(newDeck);
+}
+
+// Initiate new game on page load 
+newGame();
+
+
+
+// GAME LISTENERS
 
 // Listen for player to click on card and run functions
 $( '.card' ).click(function() {
-	openedCards();
-	checkCards();
+	var clickedElement = this;
+	addToList(clickedElement);
+	console.log(cardsInPlay);
+	checkMatch();
+	addCount();
+	allMatch();
+	// openCards(this);
 });
 
-
-
-
-
-
+//  Load new game on click
+$( '.restart' ).click(function(){
+	location.reload();
+})
