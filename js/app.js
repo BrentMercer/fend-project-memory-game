@@ -56,10 +56,11 @@ $( '.moves' ).text(0);
 function addCount() {
 	counter++;
 	$( '.moves' ).text(counter);
-	if (counter === 28 || counter === 36 || counter === 44 ) {
+	if (counter === 28 || counter === 36 ) {
 		$( '.stars li:last-child' ).remove();
 	}
 }
+
 
 
 
@@ -100,8 +101,12 @@ function allMatch() {
 	let stars = $( '.stars li' ).length;
 	console.log(matches);
 	if (newDeck.length === matches) {
-		alert("You win!" + "\nTotal guesses: " + counter + "\nStar ranking: " + stars + "\nTime: " + timer);
 		stopClock();
+		alert("You win!" + "\nTotal guesses: " + counter + "\nStar ranking: " + stars + "\nTime: " + timer);
+		let playAgain = prompt("Play again? Y/N?").toLowerCase();
+		if 	(playAgain = "y" || "yes") {
+			location.reload();
+		}
 	}
 }
 

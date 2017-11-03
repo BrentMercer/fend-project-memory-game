@@ -7,14 +7,9 @@
 
 ## Instructions
 
-The starter project has some HTML and CSS styling to display a static version of the Memory Game project. You'll need to convert this project from a static project to an interactive one. This will require modifying the HTML and CSS files, but primarily the JavaScript file.
+To play, click on a tile to reveal its symbol. Then click on another tile to reveal its symbol. Try and remember what is contained under each tile. Click on two tiles that have matching symbols to create a matching pair. The game is won when all matching pairs have been discovered.
 
-To get started, open `js/app.js` and start building out the app's functionality
-
-For specific, detailed instructions, look at the project instructions in the [Udacity Classroom](https://classroom.udacity.com/me).
 
 ## Contributing
 
-This repository is the starter code for _all_ Udacity students. Therefore, we most likely will not accept pull requests.
-
-For details, check out [CONTRIBUTING.md](CONTRIBUTING.md).
+Feel free to add or improve on this memory card game. Pull requests will be processed regularly.
