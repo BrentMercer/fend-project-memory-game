@@ -6,7 +6,9 @@ let cardsInPlay = [];
 let timer = 0;
 
 
-// TIMER
+
+
+// TIMER AND CLICK DELAY
 
 // Add 1 second to timer
 function oneSec() {
@@ -15,9 +17,13 @@ function oneSec() {
 }
 let clock = setInterval(oneSec, 1000);
 
+// Stop clock
 function stopClock() {
 	clearInterval(clock);
 }
+
+
+
 
 
 // BUILD DECK
@@ -39,7 +45,7 @@ function shuffle(array) {
 // Create new gameboard
 function createDeck(array) {
 	for (let i = 0; i < newDeck.length; i++) {
-		$( '.deck' ).append( '<li class="card"><i class="fa fa-' + String(newDeck[i].replace(/ /g,"-")) + '"></i>' + newDeck[i] + '</li>');
+		$( '.deck' ).append( '<li class="card clickable"><i class="fa fa-' + String(newDeck[i].replace(/ /g,"-")) + '"></i>' + newDeck[i] + '</li>');
 	}
 	return array;
 }
@@ -92,14 +98,13 @@ function yesMatch() {
 // If no match, remove open and show classes after short delay
 function noMatch() {
 	setTimeout(function(){
-		$( '.show' ).removeClass( 'open show' ); }, 200);
+		$( '.show' ).removeClass( 'open show' ).addClass( 'clickable' ); }, 300);
 }
 
 // Check to see if all matches have been found. If so, display win alert.
 function allMatch() {
 	let matches = $( 'li.match' ).length;
 	let stars = $( '.stars li' ).length;
-	console.log(matches);
 	if (newDeck.length === matches) {
 		stopClock();
 		alert("You win!" + "\nTotal guesses: " + counter + "\nStar ranking: " + stars + "\nTime: " + timer);
@@ -130,16 +135,22 @@ newGame();
 // Listen for player to click on card and run functions
 $( '.card' ).click(function() {
 	var clickedElement = this;
-	addToList(this);
-	console.log(cardsInPlay);
-	checkMatch();
-	addCount();
-	allMatch();
-	startTime();
-	// openCards(this);
+	if (clickedElement.classList.contains('clickable')) {
+		addToList(this);
+		console.log(cardsInPlay);
+		checkMatch();
+		addCount();
+		allMatch();
+		$(this).removeClass('clickable');
+	}
 });
 
 //  Load new game on click
 $( '.restart' ).click(function(){
 	location.reload();
 })
+
+
+
+
+
