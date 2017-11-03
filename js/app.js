@@ -6,6 +6,19 @@ let cardsInPlay = [];
 let timer = 0;
 
 
+// TIMER
+
+// Add 1 second to timer
+function oneSec() {
+	timer++;
+	$('.time').text(timer);
+}
+let clock = setInterval(oneSec, 1000);
+
+function stopClock() {
+	clearInterval(clock);
+}
+
 
 // BUILD DECK
 
@@ -87,21 +100,9 @@ function allMatch() {
 	let stars = $( '.stars li' ).length;
 	console.log(matches);
 	if (newDeck.length === matches) {
-		alert("You win!" + "\nTotal guesses: " + counter + "\nStar ranking: " + stars );
+		alert("You win!" + "\nTotal guesses: " + counter + "\nStar ranking: " + stars + "\nTime: " + timer);
+		stopClock();
 	}
-}
-
-
-
-// TIMER
-
-// Display time
-$('.time').text(timer);
-
-// Start timer
-setInterval(function(){
-	timer++;
-	}, 1000);
 }
 
 
@@ -124,7 +125,7 @@ newGame();
 // Listen for player to click on card and run functions
 $( '.card' ).click(function() {
 	var clickedElement = this;
-	addToList(clickedElement);
+	addToList(this);
 	console.log(cardsInPlay);
 	checkMatch();
 	addCount();
