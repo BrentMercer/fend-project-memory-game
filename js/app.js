@@ -45,7 +45,7 @@ function shuffle(array) {
 // Create new gameboard
 function createDeck(array) {
 	for (let i = 0; i < newDeck.length; i++) {
-		$( '.deck' ).append( '<li class="card clickable"><i class="fa fa-' + String(newDeck[i].replace(/ /g,"-")) + '"></i>' + newDeck[i] + '</li>');
+		$( '.deck' ).append( '<li class="card clickable"><i class="fa fa-' + String(newDeck[i].replace(/ /g,"-")) + '"></i>' + '</li>');
 	}
 	return array;
 }
